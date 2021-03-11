@@ -1,0 +1,12 @@
+tr td .fa-times {
+    visibility: hidden;
+}
+
+tr:hover td .fa-times {
+    visibility: visible;
+    cursor: pointer;
+}
+
+.inputClass {
+    outline: none;
+}
