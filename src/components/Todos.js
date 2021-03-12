@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react'
 import './Todos.css'
 
@@ -23,16 +24,19 @@ const Todos = () => {
                     fetch(url, options)
                         .then(response => { return response.json() })
                         .then(data => {
-                            console.log('newTodo',data)
+                            console.log('newTodo', data)
                         })
                 } else {
                     fetch(url)
                         .then(response => { return response.json() })
                         .then(data => {
-                            console.log('loadedTodo',data)
+                            console.log('loadedTodo', data)
                             let todos = [];
                             data.forEach((value) => {
-                                todos.push(value.label)
+                                if (value.label === '01001110 01101111 00100000 01110100 01100001 01110011 01101011 01110011') {
+                                } else {
+                                    todos.push(value.label);
+                                }
                             });
                             setTodo(todos);
                         })
@@ -50,7 +54,9 @@ const Todos = () => {
             if (isOnTheList) {
                 // message
             } else {
-                newTodo !== "" && setTodo([...todo, newTodo]);
+                if (newTodo !== "") {
+                    setTodo([...todo, newTodo]);
+                }
             }
             e.target.value = '';
         }
@@ -61,8 +67,21 @@ const Todos = () => {
         const newTodos = todo.filter(value => {
             return value !== item;
         });
-        setTodo(newTodos);
+        if (newTodos.length >= 1) {
+            setTodo(newTodos);
+        } else {
+            setTodo(newTodos);
+            let options = {
+                method: "PUT",
+                body: JSON.stringify([{ label: "01001110 01101111 00100000 01110100 01100001 01110011 01101011 01110011", done: false }]),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }
+            fetch(url, options)
+        }
     }
+
 
     let removeAll = () => {
         setTodo([]);
@@ -90,7 +109,7 @@ const Todos = () => {
                 }
             }
             let response = await fetch(url, options).then(res => res.json());
-            console.log(response);
+            console.log('test', response);
         }
         upTodo();
     }, [todo]);
